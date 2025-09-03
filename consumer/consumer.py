@@ -4,6 +4,7 @@ import os
 
 # read rabbitmq connection url from environment variable
 amqp_url = os.environ['AMQP_URL']
+sleep_time = int(os.environ['SLEEP_TIME'])
 url_params = pika.URLParameters(amqp_url)
 
 # connect to rabbitmq
@@ -19,11 +20,11 @@ chan.queue_declare(queue='hello', durable=True)
 def receive_msg(ch, method, properties, body):
     """function to receive the message from rabbitmq
     print it
-    sleep for 2 seconds
+    sleep for {sleep_time} seconds
     ack the message"""
 
     print('received msg : ', body.decode('utf-8'))
-    time.sleep(2)
+    time.sleep(sleep_time)
     print('acking it')
     ch.basic_ack(delivery_tag=method.delivery_tag)
 

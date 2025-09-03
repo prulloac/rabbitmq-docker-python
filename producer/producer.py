@@ -14,10 +14,10 @@ chan = connection.channel()
 # in the rabbitmq volume even between restarts
 chan.queue_declare(queue='hello', durable=True)
 
-# publish a 100 messages to the queue
-for i in range(100):
+# publish a 9000 messages to the queue
+for i in range(1000):
     chan.basic_publish(exchange='', routing_key='hello',
-                       body='Hello World', properties=pika.BasicProperties(delivery_mode=2))
+                       body=f"Hello World {i}", properties=pika.BasicProperties(delivery_mode=2))
     print("Produced the message")
 
 # close the channel and connection

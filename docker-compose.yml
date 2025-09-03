@@ -10,7 +10,7 @@ services:
 
     # we use management image to get the
     # plugin for web dashboard
-    image: rabbitmq:3.8-rc-management
+    image: rabbitmq:4-management
     container_name: rabbit_mq
     ports:
         - '5672:5672'
@@ -39,6 +39,7 @@ services:
         - rabbit_mq
     environment:
         AMQP_URL: 'amqp://rabbit_mq?connection_attempts=10&retry_delay=10'
+        SLEEP_TIME: 2
     volumes:
       - ./consumer:/usr/src/app/consumer
   consumer2:
@@ -47,6 +48,16 @@ services:
         - rabbit_mq
     environment:
         AMQP_URL: 'amqp://rabbit_mq?connection_attempts=10&retry_delay=10'
+        SLEEP_TIME: 1
+    volumes:
+      - ./consumer:/usr/src/app/consumer
+  consumer3:
+    build: consumer
+    depends_on:
+        - rabbit_mq
+    environment:
+        AMQP_URL: 'amqp://rabbit_mq?connection_attempts=10&retry_delay=10'
+        SLEEP_TIME: 1
     volumes:
       - ./consumer:/usr/src/app/consumer
 volumes:
